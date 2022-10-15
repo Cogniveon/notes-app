@@ -1,12 +1,30 @@
 spring:
   application:
     name: notes-app
+server:
+  port: 9000
 ---
+# spring:
+#   config:
+#     activate:
+#       on-profile: local
 spring:
-  config:
-    activate:
-      on-profile: local
-
+  security:
+    oauth2:
+      client:
+        registration:
+          keycloak:
+            provider: keycloak
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+            client-id: notes-ui
+            client-secret: 8F5D0AKVgTmFxTOa7lZr0TT0AR8cyqO9
+            scope: openid, profile
+        provider:
+          keycloak:
+            authorization-uri: http://localhost:8080/realms/notes-app/protocol/openid-connect/auth
+            token-uri: http://localhost:8080/realms/notes-app/protocol/openid-connect/token
+            jwk-set-uri: http://localhost:8080/realms/notes-app/protocol/openid-connect/certs
+            issuer-uri: http://localhost:8080/realms/notes-app
 logging:
   level:
     org.springframework.boot: info

@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "target": "es5",
+    "lib": ["dom", "dom.iterable", "esnext"],
+    "allowJs": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "incremental": true,
+    "outDir": "./build/ts/static",
+    "tsBuildInfoFile": "./build/ts/.tsbuildinfo"
+  },
+  "include": ["./src/main/ts/**/*.ts", "./src/main/ts/**/*.tsx"],
+  "exclude": ["node_modules"]
+}

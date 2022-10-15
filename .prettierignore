@@ -1,0 +1,6 @@
+.yarn
+dist
+templates
+staticfiles
+venv
+node_modules

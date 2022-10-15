@@ -7,6 +7,7 @@
 plugins {
   id 'org.springframework.boot' version '3.0.0-SNAPSHOT'
   id 'io.spring.dependency-management' version '1.0.14.RELEASE'
+  id 'com.github.node-gradle.node' version '3.4.0'
   id 'java'
 }
 
@@ -28,13 +29,9 @@ repositories {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
-  implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-
-  implementation 'org.flywaydb:flyway-core'
-  implementation 'org.springframework.boot:spring-boot-starter-data-r2dbc'
-  implementation 'org.springframework:spring-jdbc'
-  runtimeOnly 'io.r2dbc:r2dbc-h2'
-  runtimeOnly 'com.h2database:h2'
+  implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+  // implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
+  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
@@ -46,8 +43,8 @@ dependencies {
 }
 
 task setupPreCommit(type: Exec) {
-  final String osName = System.getProperty("os.name").toLowerCase();
-  if (osName.contains("windows")) {
+  final String osName = System.getProperty('os.name').toLowerCase()
+  if (osName.contains('windows')) {
     commandLine 'cmd', '/c', 'pre-commit install'
   }
   else {
@@ -57,6 +54,31 @@ task setupPreCommit(type: Exec) {
 
 build.dependsOn setupPreCommit
 
+tasks.named('bootRun') {
+  systemProperty 'spring.profiles.active', findProperty('profile') ?: 'dev'
+}
+
+def buildTask = tasks.register('buildWebapp', YarnTask) {
+  dependsOn(yarn)
+  args = ['build']
+  inputs.dir(fileTree('src/main/ts').exclude('**/*.test.(j|t)sx?').exclude('**/*.spec.(j|t)sx?').exclude('**/__tests__/**/*.(j|t)sx?'))
+  inputs.dir('node_modules')
+  // inputs.dir("public")
+  outputs.dir("${buildDir}/ts")
+// environment = ["BUILD_PATH": "${buildDir}/webapp/webroot"]
+}
+
 tasks.named('test') {
   useJUnitPlatform()
+}
+
+sourceSets {
+  java {
+    main {
+      resources {
+        // This makes the processResources task automatically depend on the buildWebapp one
+        srcDir(buildTask)
+      }
+    }
+  }
 }

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html th:lang="${#locale}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Django + React boilerplate" />
+    <title>Spring React Boilerplate</title>
+
+    <script
+      th:unless="${#arrays.contains(@environment.getActiveProfiles(),'prod')}"
+      type="module"
+      src="http://localhost:5173/@vite/client"
+    ></script>
+
+    <!-- If you're using vite with React, this next script will be needed for HMR -->
+    <script
+      th:unless="${#arrays.contains(@environment.getActiveProfiles(),'prod')}"
+      type="module"
+    >
+      import RefreshRuntime from "http://localhost:5173/@react-refresh";
+
+      if (RefreshRuntime) {
+        RefreshRuntime.injectIntoGlobalHook(window);
+        window.$RefreshReg$ = () => {};
+        window.$RefreshSig$ = () => (type) => type;
+        window.__vite_plugin_react_preamble_installed__ = true;
+      }
+    </script>
+  </head>
+
+  <body>
+    <noscript>
+      This page requires javascript to run. Please, enable javascript.
+    </noscript>
+    <div id="app-root"></div>
+    <script
+      th:unless="${#arrays.contains(@environment.getActiveProfiles(),'prod')}"
+      type="module"
+      src="http://localhost:5173/main.tsx"
+    ></script>
+  </body>
+</html>
