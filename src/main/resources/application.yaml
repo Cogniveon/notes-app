@@ -17,8 +17,8 @@ spring:
             provider: keycloak
             redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
             client-id: notes-ui
-            client-secret: 8F5D0AKVgTmFxTOa7lZr0TT0AR8cyqO9
-            scope: openid, profile
+            client-secret: qiF5oHvwfxvyBoA75JpGCWhYFUN916Hn
+            scope: openid, profile, email, roles
         provider:
           keycloak:
             authorization-uri: http://localhost:8080/realms/notes-app/protocol/openid-connect/auth
