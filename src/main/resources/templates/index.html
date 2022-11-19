@@ -26,6 +26,8 @@
         window.__vite_plugin_react_preamble_installed__ = true;
       }
     </script>
+
+    <link th:if="${#arrays.contains(@environment.getActiveProfiles(),'prod')}" th:each="css: ${manifest['main.tsx'].css}" rel="stylesheet" th:href="${css}">
   </head>
 
   <body>
@@ -38,5 +40,11 @@
       type="module"
       src="http://localhost:5173/main.tsx"
     ></script>
+
+    <script
+      th:if="${#arrays.contains(@environment.getActiveProfiles(),'prod')}"
+      th:src="${manifest['main.tsx'].file}"
+    ></script>
+
   </body>
 </html>

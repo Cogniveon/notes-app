@@ -31,7 +31,6 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-webflux'
   implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
   // implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-  implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 
   compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
@@ -41,18 +40,6 @@ dependencies {
   testImplementation 'org.springframework.boot:spring-boot-starter-test'
   testImplementation 'io.projectreactor:reactor-test'
 }
-
-task setupPreCommit(type: Exec) {
-  final String osName = System.getProperty('os.name').toLowerCase()
-  if (osName.contains('windows')) {
-    commandLine 'cmd', '/c', 'pre-commit install'
-  }
-  else {
-    commandLine 'pre-commit install'
-  }
-}
-
-build.dependsOn setupPreCommit
 
 tasks.named('bootRun') {
   systemProperty 'spring.profiles.active', findProperty('profile') ?: 'dev'

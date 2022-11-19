@@ -9,6 +9,10 @@ server:
 #     activate:
 #       on-profile: local
 spring:
+  webflux:
+    static-path-pattern: /static/**
+  thymeleaf:
+    cache: false
   security:
     oauth2:
       client:
